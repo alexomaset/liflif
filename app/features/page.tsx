@@ -170,7 +170,7 @@ const FeaturesPage = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-blue-600">Why Our Features Matter</h2>
           <p className="text-gray-600 mt-4">
-            We don't just move cargo, we revolutionize logistics management
+            We dont just move cargo, we revolutionize logistics management
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-8 items-center">
