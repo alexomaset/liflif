@@ -100,10 +100,10 @@ const FeaturesPage = () => {
               <Link href="/" className="flex items-center space-x-4">
                 <div className="relative w-12 h-12">
                   <Image
-                    src="/liflif.jpeg"
+                    src="/lifi.jpg"
                     alt="LIFLIF Logo"
-                    width={48}
-                    height={48}
+                    width={500}
+                    height={500}
                     className="rounded-lg shadow-lg"
                   />
                 </div>
