@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Footer from '../components/Footer';
 
 const FeaturesPage = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -100,10 +101,11 @@ const FeaturesPage = () => {
               <Link href="/" className="flex items-center space-x-4">
                 <div className="relative w-12 h-12">
                   <Image
-                    src="/lifi.jpg"
+                    src="/logo.svg"
                     alt="LIFLIF Logo"
-                    width={500}
-                    height={500}
+                    height={564}
+                    width={564}
+                    priority
                     className="rounded-lg shadow-lg"
                   />
                 </div>
@@ -301,7 +303,7 @@ const FeaturesPage = () => {
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-400 transform rotate-3 rounded-2xl"></div>
-              <img 
+              <Image
                 src="/homes.jpg" 
                 height={500}
                 width={800}
@@ -336,6 +338,7 @@ const FeaturesPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

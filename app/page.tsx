@@ -1,421 +1,309 @@
 "use client";
 
-import React, { useState, useRef, useEffect, ReactElement } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  MapPin,
-  Clock,
-  Shield,
-  Download,
-  ChevronRight,
-  Link,
+  ArrowRight,
+  Truck,
+  Package,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import ScrollIndicator from "./components/ScrollIndicator";
+import Link from "next/link";
 import AppShowcase from "./components/AppShowcase";
-import Footer from "./components/Footer";
 import SystemShowcase from "./components/Systemshowcase";
-import DemoRequest from "./components/DemoSes";
-import dynamic from "next/dynamic";
-
-const AnimatedDeliveryMap = dynamic(() => import('./components/AnimatedDeliveryMap'), {
-  ssr: false
-});
-
+import Footer from "./components/Footer";
 
 interface Feature {
-  icon: ReactElement;
+  icon: React.ReactElement;
   title: string;
   description: string;
 }
 
-const Navigation: React.FC<{
-  isScrolled: boolean;
-  isHovered: boolean;
-  setIsHovered: (value: boolean) => void;
-}> = ({ isScrolled, isHovered, setIsHovered }) => {
-  const [isMounted, setIsMounted] = useState(false);
+
+const LiflifLandingPage: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Initial SSR-safe version
-  if (!isMounted) {
-    return (
+  
+  const features: Feature[] = [
+    {
+      icon: <Truck className="w-8 h-8 text-blue-600" />,
+      title: "Last Mile Delivery",
+      description:
+        "Optimized routes and real-time tracking for efficient local deliveries",
+    },
+    {
+      icon: <Package className="w-8 h-8 text-blue-600" />,
+      title: "Same Day Delivery",
+      description:
+        "Express delivery service for urgent packages within city limits",
+    },
+    {
+      icon: <Users className="w-8 h-8 text-blue-600" />,
+      title: "Multiple Dropoffs",
+      description:
+        "Efficient handling of multiple delivery points in a single trip",
+    },
+  ];
+
+  return (
+    <div className="bg-gray-50">
+      {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-gray-900/90 backdrop-blur-sm" : "bg-transparent"
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/90 backdrop-blur-sm shadow-md"
+            : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="relative h-20 w-48">
+            <Link href="/" className="relative h-16 w-40">
               <Image
-                src="/liflif.jpeg"
+                src="/logo.svg"
                 alt="LIFLIF Logo"
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain"
                 priority
               />
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-              <a href="#about" className="text-gray-300 hover:text-white transition-colors">About</a>
-              <a href="#contact" className="text-gray-300 hover:text-white transition-colors">Contact</a>
-              <button className="bg-cyan-500 text-white px-6 py-2 rounded-full hover:bg-cyan-400 transition-colors">
+              <Link
+                href="solutions"
+                className="text-white-700 hover:text-blue-600"
+              >
+                Solutions
+              </Link>
+              <Link
+                href="features"
+                className="text-white-700 hover:text-blue-600"
+              >
+                Features
+              </Link>
+              <Link
+                href="pricing"
+                className="text-white-700 hover:text-blue-600"
+              >
+                Pricing
+              </Link>
+              <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                 Get Started
               </button>
             </div>
           </div>
         </div>
       </nav>
-    );
-  }
-
-  return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-gray-900/90 backdrop-blur-sm" : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div
-            className="transform transition-transform duration-300 hover:scale-105"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <Link href="/" className="flex items-center">
-              <div className="relative h-20 w-48">
-                <Image
-                  src="/liflif.jpeg"
-                  alt="LIFLIF Logo"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-contain"
-                  priority
-                />
-                {isHovered && (
-                  <div className="absolute inset-0 bg-cyan-500 opacity-20 rounded-lg transition-opacity duration-300" />
-                )}
-              </div>
-            </Link>
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-            <a href="#about" className="text-gray-300 hover:text-white transition-colors">About</a>
-            <a href="#contact" className="text-gray-300 hover:text-white transition-colors">Contact</a>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="bg-cyan-500 text-white px-6 py-2 rounded-full hover:bg-cyan-400 transition-colors"
-            >
-              Get Started
-            </motion.button>
-          </div>
-        </div>
-      </div>
-    </motion.nav>
-  );
-};
-
-const LiflifLandingPage: React.FC = () => {
-  const [activeFeature, setActiveFeature] = useState<number>(0);
-  const [, setIsAppSectionVisible] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const appSectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsAppSectionVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (appSectionRef.current) {
-      observer.observe(appSectionRef.current);
-    }
-
-    return () => {
-      if (appSectionRef.current) {
-        observer.unobserve(appSectionRef.current);
-      }
-    };
-  }, []);
-
-  const features: Feature[] = [
-    {
-      icon: <MapPin className="w-12 h-12 text-cyan-400" />,
-      title: "Real-Time Tracking",
-      description:
-        "Track your deliveries with precision, know exactly where your cargo is at any moment with our advanced GPS technology.",
-    },
-    {
-      icon: <Clock className="w-12 h-12 text-cyan-400" />,
-      title: "Efficient Routing",
-      description:
-        "AI-powered route optimization for faster deliveries, lower fuel costs, and improved operational efficiency.",
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-cyan-400" />,
-      title: "Secure Transactions",
-      description:
-        "Bank-grade security for all payments with multiple payment options and instant confirmation.",
-    },
-  ];
-
-  return (
-    <div className="relative min-h-screen bg-gray-900">
-      {/* Animated Background */}
-      <AnimatedDeliveryMap />
-      <Navigation 
-        isScrolled={isScrolled}
-        isHovered={isHovered}
-        setIsHovered={setIsHovered}
-      />
-
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-gray-900/90 backdrop-blur-sm" : "bg-transparent"
-        }`}
-      >
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div
-              className="transform transition-transform duration-300 hover:scale-105"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <Link href="/" className="flex items-center">
-                <div className="relative h-20 w-48">
-                  <Image
-                    src="/liflif.jpeg" // Make sure this path is correct
-                    alt="LIFLIF Logo"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-contain"
-                    priority
-                  />
-                  {isHovered && (
-                    <div className="absolute inset-0 bg-cyan-500 opacity-20 rounded-lg transition-opacity duration-300" />
-                  )}
-                </div>
-              </Link>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-8">
-              <a
-                href="#features"
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Features
-              </a>
-              <a
-                href="#about"
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                About
-              </a>
-              <a
-                href="#contact"
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Contact
-              </a>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="bg-cyan-500 text-white px-6 py-2 rounded-full hover:bg-cyan-400 transition-colors"
-              >
-                Get Started
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </motion.nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center">
-        <div className="container mx-auto px-6 pt-32 pb-20">
+      {/* Hero Section */}
+      <section
+        className="relative pt-36 pb-24 bg-cover bg-center"
+        style={{ backgroundImage: "url('/wallpaper.jpeg')" }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/50" />
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
+            className="text-center max-w-4xl mx-auto mb-12"
           >
-            <h1 className="text-7xl font-bold text-white mb-8 leading-tight">
-              <motion.span
-                className="text-cyan-400"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                Logistics
-              </motion.span>{" "}
-              Reimagined
+            <h1 className="text-5xl font-bold mb-6 leading-tight">
+              <span className="text-blue-200">Smart</span>{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                Delivery Management
+              </span>{" "}
+              <span className="text-white">for</span>{" "}
+              <span className="text-blue-300">Modern Business</span>
             </h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-2xl mb-10 text-cyan-100 leading-relaxed"
-            >
-              Transforming Delivery Logistics with Smart Technology and
-              Innovative Solutions
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="bg-cyan-500 text-white px-8 py-4 rounded-full font-semibold text-lg group"
-              >
-                Download App
-                <Download className="ml-2 w-5 h-5 inline group-hover:translate-y-1 transition-transform" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg group"
-              >
-                Learn More
-                <ChevronRight className="ml-2 w-5 h-5 inline group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
+            <p className="text-xl text-gray-200 mb-8 mx-auto max-w-3xl">
+              Streamline your delivery operations with our{" "}
+              <span className="text-blue-200 font-semibold">
+                intelligent logistics platform
+              </span>
+              . <span className="text-white">Track</span>,{" "}
+              <span className="text-white">manage</span>, and{" "}
+              <span className="text-blue-200">optimize</span> your deliveries in
+              real-time.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center transition-colors shadow-lg hover:shadow-xl border-2 border-blue-500">
+                Start Free Trial
+                <ArrowRight className="ml-2 w-5 h-5 text-blue-200" />
+              </button>
+              <button className="bg-transparent text-white border-2 border-blue-300 hover:border-blue-400 hover:bg-blue-100/10 px-8 py-3 rounded-lg transition-colors shadow-lg hover:shadow-xl">
+                Schedule Demo
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Image Carousel */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative h-[500px] max-w-5xl mx-auto"
+          >
+            {/* ... rest of the carousel code remains unchanged ... */}
           </motion.div>
         </div>
-
-        <ScrollIndicator />
-
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent py-12"
-        >
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <p className="text-gray-300">Delivery Success Rate</p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray-300">Average Delivery Time</p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-cyan-400 mb-2">24/7</h3>
-                <p className="text-gray-300">Customer Support</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </section>
-
-      {/* Features Section */}
-      <section className="relative py-24">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="container mx-auto px-6"
-        >
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-cyan-400 mb-4">
-              Our Solutions
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Watch Our Platform in Action
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Innovative technology for seamless logistics management that
-              transforms your business operations
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              See how LIFLIF transforms your delivery management with a quick
+              overview
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl"
+          >
+            <video
+              controls
+              className="w-full h-auto"
+              poster="/dliver.jpg" // Add a thumbnail frame
+            >
+              <source src="/lifvid.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
+        </div>
+      </section>
+      {/* Features Grid */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-blue-50 to-white"></div>
+        <div className="container mx-auto px-6 relative">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Complete Delivery Management Solution
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Everything you need to manage your delivery operations efficiently
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <motion.div
-                key={feature.title}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2 }}
-                className={`text-center p-8 rounded-xl backdrop-blur-sm 
-                  ${
-                    activeFeature === index
-                      ? "bg-gray-800/50 shadow-xl"
-                      : "hover:bg-gray-800/30"
-                  }`}
-                onMouseEnter={() => setActiveFeature(index)}
+                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 hover:border-blue-300 transition-all duration-300 hover:shadow-xl"
               >
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="flex justify-center mb-6"
-                >
+                <div className="mb-4 bg-blue-50 p-4 rounded-xl inline-block">
                   {feature.icon}
-                </motion.div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-      </section>
-      <AppShowcase />
-      <SystemShowcase />
-      {/* About Section */}
-
-      {/* App Preview Section */}
-      <DemoRequest />
-
-      {/* Call to Action */}
-      <section className="relative py-24 bg-gradient-to-b from-transparent to-gray-900">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Ready to Transform Your Delivery Operations?
-            </h2>
-            <p className="text-gray-300 text-lg mb-12">
-              Join thousands of businesses that trust LIFLIF for their delivery
-              needs. Get started today and experience the difference.
-            </p>
-            <button className="bg-cyan-500 text-white px-12 py-6 rounded-full text-xl font-medium hover:bg-cyan-400 transition-all duration-300 transform hover:scale-105">
-              Get Started Now
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* How It Works - Enhanced */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              How LIFLIF Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Simple steps to transform your delivery operations
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                step: 1,
+                title: "Sign Up",
+                description:
+                  "Create your account and set up your delivery preferences",
+              },
+              {
+                step: 2,
+                title: "Add Deliveries",
+                description:
+                  "Upload your delivery orders manually or through our API",
+              },
+              {
+                step: 3,
+                title: "Track & Manage",
+                description:
+                  "Monitor deliveries in real-time and optimize routes",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="text-center relative"
+              >
+                <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                  <span className="text-3xl text-white font-bold">
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-lg">{item.description}</p>
+                {index < 2 && (
+                  <div className="hidden md:block absolute top-10 left-[60%] w-[40%] h-[2px] bg-blue-200">
+                    <div className="absolute right-0 -mt-1 w-3 h-3 rounded-full bg-blue-600"></div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <AppShowcase />
+      <SystemShowcase />
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/grid.png')] opacity-10"></div>
+        <div className="container mx-auto px-6 text-center relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Ready to Optimize Your Deliveries?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Join thousands of businesses that trust LIFLIF for their delivery
+              operations
+            </p>
+            <button className="bg-white text-blue-600 px-10 py-4 rounded-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl text-lg font-semibold">
+              Get Started Now
+            </button>
+          </motion.div>
+        </div>
+      </section>
       <Footer />
     </div>
-  );
+  );  
 };
-
-// Mobile features data
 
 export default LiflifLandingPage;
