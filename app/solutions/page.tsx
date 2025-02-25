@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Truck, MessageSquare, ChevronRight, Users, Package, Clock } from "lucide-react";
+import { Truck, MessageSquare, ChevronRight, Users, Package, Clock, ArrowRight, Star } from "lucide-react";
 import Footer from "../components/Footer";
+
 
 interface SolutionCardProps {
   title: string;
@@ -14,10 +15,26 @@ interface SolutionCardProps {
   imagePath: string;
   features: string[];
   index: number;
+  benefits: string[];
 }
 
 const SolutionsPage: React.FC = () => {
-    const [isScrolled] = React.useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+    useScroll();
+  const heroRef = useRef(null);
+  const isHeroInView = useInView(heroRef, { once: false });
+  
+  // Handle navbar background change on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
   const solutions = [
     {
       title: "Fleet Management",
@@ -30,6 +47,11 @@ const SolutionsPage: React.FC = () => {
         "Maintenance scheduling",
         "Fuel consumption optimization",
         "Route history analysis"
+      ],
+      benefits: [
+        "Reduce fuel costs by up to 20%",
+        "Improve delivery times by 35%",
+        "Lower maintenance costs"
       ]
     },
     {
@@ -43,6 +65,29 @@ const SolutionsPage: React.FC = () => {
         "Real-time delivery updates",
         "Payment integration",
         "Natural language processing"
+      ],
+      benefits: [
+        "Reduce customer service costs by 40%",
+        "24/7 order availability",
+        "Increase customer satisfaction"
+      ]
+    },
+    {
+      title: "Route Optimization",
+      description: "Minimize delivery time and costs with AI-powered route planning and optimization.",
+      icon: <ArrowRight className="w-8 h-8 text-blue-600" />,
+      imagePath: "/route-optimization.svg",
+      features: [
+        "AI-powered route suggestions",
+        "Traffic-aware planning",
+        "Bulk delivery optimization",
+        "Delivery time windows",
+        "Multiple stop management"
+      ],
+      benefits: [
+        "Cut delivery times by up to 30%",
+        "Reduce fuel consumption by 25%",
+        "Handle more deliveries per driver"
       ]
     }
   ];
@@ -75,62 +120,157 @@ const SolutionsPage: React.FC = () => {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 relative overflow-hidden">
+      <section ref={heroRef} className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full opacity-20"></div>
-          <div className="absolute top-60 -left-20 w-60 h-60 bg-blue-300 rounded-full opacity-20"></div>
+          <motion.div 
+            className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full opacity-20"
+            animate={{ scale: [1, 1.1, 1], x: [0, 10, 0], y: [0, -10, 0] }}
+            transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
+          />
+          <motion.div 
+            className="absolute top-60 -left-20 w-60 h-60 bg-blue-300 rounded-full opacity-20"
+            animate={{ scale: [1, 1.2, 1], x: [0, -10, 0], y: [0, 15, 0] }}
+            transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", delay: 2 }}
+          />
+          <motion.div 
+            className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400 rounded-full opacity-10"
+            animate={{ scale: [1, 1.3, 1], x: [0, 15, 0], y: [0, -15, 0] }}
+            transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", delay: 1 }}
+          />
         </div>
+        
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-3xl mx-auto"
+            className="text-center max-w-4xl mx-auto"
           >
-            <motion.h1 
-              className="text-5xl font-bold text-gray-900 mb-6"
+            <motion.span 
+              className="inline-block py-1 px-3 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold mb-4"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ delay: 0.1, duration: 0.8 }}
+            >
+              Delivery Management Platform
+            </motion.span>
+            
+            <motion.h1 
+              className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Innovative <span className="text-blue-600">Solutions</span> for Modern Delivery Challenges
+              Innovative <span className="text-blue-600 relative">
+                Solutions
+                <motion.svg
+                  width="100%"
+                  height="8"
+                  viewBox="0 0 200 8"
+                  className="absolute -bottom-2 left-0 w-full"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={isHeroInView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+                  transition={{ delay: 0.6, duration: 1 }}
+                >
+                  <path
+                    d="M1 5.5C30 2.5 170 -0.5 199 5.5"
+                    stroke="#3B82F6"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                </motion.svg>
+              </span> for Modern Delivery Challenges
             </motion.h1>
+            
             <motion.p
-              className="text-xl text-gray-600 mb-8"
+              className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Discover how our cutting-edge delivery management platform can transform your logistics operations
+              Discover how our cutting-edge delivery management platform can transform your logistics operations and help you deliver exceptional customer experiences.
             </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            >
+              <button className="bg-blue-600 text-white px-8 py-4 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] text-lg font-semibold w-full sm:w-auto">
+                Explore Solutions
+              </button>
+              <button className="bg-white text-blue-600 border-2 border-blue-200 px-8 py-4 rounded-full hover:border-blue-400 transition-all shadow-md hover:shadow-lg text-lg font-semibold w-full sm:w-auto">
+                Request Demo
+              </button>
+            </motion.div>
           </motion.div>
 
+          {/* Enhanced Stats Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex justify-center gap-6 flex-wrap mt-8"
+            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-4xl mx-auto"
           >
-            <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-lg shadow-md">
-              <Users className="text-blue-600" />
-              <span className="font-medium">2,500+ Businesses</span>
+            <div className="flex flex-col items-center gap-2 bg-white p-6 rounded-xl shadow-lg border-b-4 border-blue-500 hover:transform hover:translate-y-[-5px] transition-all duration-300">
+              <Users className="text-blue-600 w-10 h-10 mb-2" />
+              <span className="text-gray-500 text-sm font-medium">Trusted By</span>
+              <span className="font-bold text-2xl">2,500+</span>
+              <span className="font-medium">Businesses</span>
             </div>
-            <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-lg shadow-md">
-              <Package className="text-blue-600" />
-              <span className="font-medium">10M+ Deliveries</span>
+            <div className="flex flex-col items-center gap-2 bg-white p-6 rounded-xl shadow-lg border-b-4 border-blue-500 hover:transform hover:translate-y-[-5px] transition-all duration-300">
+              <Package className="text-blue-600 w-10 h-10 mb-2" />
+              <span className="text-gray-500 text-sm font-medium">Completed</span>
+              <span className="font-bold text-2xl">10M+</span>
+              <span className="font-medium">Deliveries</span>
             </div>
-            <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-lg shadow-md">
-              <Clock className="text-blue-600" />
-              <span className="font-medium">99.8% On-time</span>
+            <div className="flex flex-col items-center gap-2 bg-white p-6 rounded-xl shadow-lg border-b-4 border-blue-500 hover:transform hover:translate-y-[-5px] transition-all duration-300">
+              <Clock className="text-blue-600 w-10 h-10 mb-2" />
+              <span className="text-gray-500 text-sm font-medium">Success Rate</span>
+              <span className="font-bold text-2xl">99.8%</span>
+              <span className="font-medium">On-time Delivery</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Solutions Section */}
-      <section className="py-20">
+      {/* Section Title */}
+      <div className="container mx-auto px-6 mb-12">
+        <div className="text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="text-3xl font-bold text-gray-900 mb-4"
+          >
+            Our Comprehensive Solutions
+          </motion.h2>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: "80px" }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="h-1 bg-blue-600 mx-auto mb-8"
+          />
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="text-lg text-gray-600 max-w-2xl mx-auto mb-16"
+          >
+            Tailored tools to optimize every aspect of your delivery operations, from fleet management to customer communications.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Enhanced Solutions Section with More Context and Better Layout */}
+      <section className="py-12">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {solutions.map((solution, index) => (
               <SolutionCard 
                 key={solution.title}
@@ -139,12 +279,17 @@ const SolutionsPage: React.FC = () => {
                 icon={solution.icon}
                 imagePath={solution.imagePath}
                 features={solution.features}
+                benefits={solution.benefits}
                 index={index}
               />
             ))}
           </div>
         </div>
       </section>
+
+
+
+      
 
       {/* SVG Definitions for Card Illustrations */}
       <div className="hidden">
@@ -185,7 +330,7 @@ const SolutionsPage: React.FC = () => {
 };
 
 // Solution Card Component with Animation
-const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, features, index }) => {
+const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, features, benefits, index }) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true, margin: "-100px 0px" });
   
@@ -195,9 +340,9 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, f
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, delay: index * 0.2 }}
-      className="bg-white rounded-2xl overflow-hidden shadow-lg border border-blue-100 group hover:shadow-xl transition-all duration-300"
+      className="bg-white rounded-2xl overflow-hidden shadow-lg border border-blue-100 group hover:shadow-xl transition-all duration-300 flex flex-col h-full"
     >
-      <div className="h-64 bg-blue-50 relative overflow-hidden">
+      <div className="h-56 bg-blue-50 relative overflow-hidden">]
         <motion.div
           initial={{ scale: 1 }}
           whileHover={{ scale: 1.05 }}
@@ -206,15 +351,17 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, f
         >
           {title === "Fleet Management" ? (
             <FleetManagementIllustration />
-          ) : (
+          ) : title === "WhatsApp Chatbot" ? (
             <WhatsAppChatbotIllustration />
+          ) : (
+            <DefaultIllustration />
           )}
         </motion.div>
       </div>
       
-      <div className="p-8">
+      <div className="p-8 flex-grow flex flex-col">
         <div className="flex items-center mb-4">
-          <div className="p-3 bg-blue-100 rounded-lg mr-4">
+          <div className="p-3 bg-blue-100 rounded-full mr-4">
             {icon}
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
@@ -224,7 +371,28 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, f
           {description}
         </p>
         
-        <h4 className="font-semibold mb-3 text-blue-800">Key Features:</h4>
+        {/* Benefits Section */}
+        <div className="mb-6 bg-blue-50 p-4 rounded-lg">
+          <h4 className="font-semibold mb-3 text-blue-800 flex items-center">
+            <Star className="w-4 h-4 mr-2 text-blue-600" /> Key Benefits:
+          </h4>
+          <ul className="space-y-2">
+            {benefits.map((benefit, i) => (
+              <motion.li 
+                key={i}
+                initial={{ opacity: 0, x: -10 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                transition={{ delay: 0.3 + (i * 0.1) }}
+                className="flex items-start"
+              >
+                <ChevronRight className="text-blue-600 mt-1 mr-2 w-4 h-4 flex-shrink-0" />
+                <span className="text-gray-700 font-medium">{benefit}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+        
+        <h4 className="font-semibold mb-3 text-blue-800">Features:</h4>
         <ul className="space-y-2 mb-8">
           {features.map((feature, i) => (
             <motion.li 
@@ -240,20 +408,28 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ title, description, icon, f
           ))}
         </ul>
         
-        <motion.button
-          whileHover={{ scale: 1.05, x: 5 }}
-          whileTap={{ scale: 0.95 }}
-          className="text-blue-600 font-medium flex items-center group-hover:text-blue-800 transition-colors"
-        >
-          Learn more
-          <ChevronRight className="ml-1 w-5 h-5 group-hover:ml-2 transition-all" />
-        </motion.button>
+        <div className="mt-auto">
+          <motion.button
+            whileHover={{ scale: 1.05, x: 5 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-blue-600 text-white font-medium flex items-center py-3 px-6 rounded-lg group-hover:bg-blue-700 transition-colors w-full justify-center"
+          >
+            Learn more
+            <ChevronRight className="ml-1 w-5 h-5 group-hover:ml-2 transition-all" />
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );
 };
-
 // Custom SVG Illustrations for the solution cards
+const DefaultIllustration = () => (
+  <svg width="400" height="250" viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
+    <rect width="400" height="250" fill="#EBF5FF" />
+    <circle cx="200" cy="125" r="90" fill="#DBEAFE" />
+    <text x="200" y="125" textAnchor="middle" fontFamily="sans-serif" fontSize="24" fill="#3B82F6">Default</text>
+  </svg>
+);
 const FleetManagementIllustration = () => (
     <svg width="400" height="250" viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
     {/* Background with Gradient */}

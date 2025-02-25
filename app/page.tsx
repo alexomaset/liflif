@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  ArrowRight,
-  Truck,
-  Package,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Truck, Package, Users } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -20,9 +15,9 @@ interface Feature {
   description: string;
 }
 
-
 const LiflifLandingPage: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -30,7 +25,6 @@ const LiflifLandingPage: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  
   const features: Feature[] = [
     {
       icon: <Truck className="w-8 h-8 text-blue-600" />,
@@ -58,13 +52,17 @@ const LiflifLandingPage: React.FC = () => {
       <nav
         className={`fixed w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/90 backdrop-blur-sm shadow-md"
+            ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-blue-100"
             : "bg-transparent"
         }`}
       >
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
-            <Link href="/" className="relative h-16 w-40">
+            {/* Logo with subtle hover effect */}
+            <Link
+              href="/"
+              className="relative h-16 w-40 transition-transform duration-300 hover:scale-105"
+            >
               <Image
                 src="/logo.svg"
                 alt="LIFLIF Logo"
@@ -73,31 +71,99 @@ const LiflifLandingPage: React.FC = () => {
                 priority
               />
             </Link>
-            <div className="hidden md:flex items-center space-x-8">
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-2">
+              {/* Navigation Links with active indicator */}
+              <div className="flex items-center mr-4">
+                {[
+                  { href: "solutions", label: "Solutions" },
+                  { href: "features", label: "Features" },
+                  { href: "pricing", label: "Pricing" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`relative px-4 py-2 text-sm font-medium rounded-lg mx-1 transition-all duration-300 group ${
+                      isScrolled
+                        ? "text-gray-700 hover:text-blue-600"
+                        : "text-white hover:text-blue-200"
+                    }`}
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-500 group-hover:w-1/2 transition-all duration-300"></span>
+                  </Link>
+                ))}
+              </div>
+
+              {/* CTA Button with enhanced styling */}
+              <button className="bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center">
+                <span>Get Started</span>
+                <svg
+                  className="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile Menu Button (only shown on mobile) */}
+            <button className="md:hidden p-2 rounded-lg bg-blue-50 text-blue-600">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Dropdown (conditionally rendered when mobile menu is open) */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-blue-100 shadow-lg">
+            <div className="container mx-auto px-6 py-4 space-y-3">
               <Link
                 href="solutions"
-                className="text-white-700 hover:text-blue-600"
+                className="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
               >
                 Solutions
               </Link>
               <Link
                 href="features"
-                className="text-white-700 hover:text-blue-600"
+                className="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
               >
                 Features
               </Link>
               <Link
                 href="pricing"
-                className="text-white-700 hover:text-blue-600"
+                className="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
               >
                 Pricing
               </Link>
-              <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="w-full mt-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors">
                 Get Started
               </button>
             </div>
           </div>
-        </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -156,34 +222,102 @@ const LiflifLandingPage: React.FC = () => {
           </motion.div>
         </div>
       </section>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-20 bg-blue-100 relative overflow-hidden"
+      >
+        {/* Background elements */}
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-200 rounded-full opacity-70 blur-3xl"></div>
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-300 rounded-full opacity-50 blur-3xl"></div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-blue-800 mb-4">
               Watch Our Platform in Action
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-blue-600 max-w-2xl mx-auto">
               See how LIFLIF transforms your delivery management with a quick
               overview
             </p>
           </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl"
-          >
-            <video
-              controls
-              className="w-full h-auto"
-              poster="/dliver.jpg" // Add a thumbnail frame
+
+          <div className="max-w-4xl mx-auto">
+            {/* Video card with custom frame */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white p-3 rounded-2xl shadow-lg border border-blue-200"
             >
-              <source src="/lifvid.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+              {/* Top bar to mimic a browser/video player */}
+              <div className="bg-blue-50 rounded-t-xl p-3 flex items-center justify-between border-b border-blue-100 mb-2">
+                <div className="flex space-x-2">
+                  <span className="w-3 h-3 rounded-full bg-red-400"></span>
+                  <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+                  <span className="w-3 h-3 rounded-full bg-green-400"></span>
+                </div>
+                <div className="text-blue-600 text-sm font-medium">
+                  LIFLIF Demo
+                </div>
+                <div className="w-16"></div> {/* Spacer for balance */}
+              </div>
+
+              {/* Video container */}
+              <div className="relative rounded-xl overflow-hidden">
+                <video controls className="w-full h-auto" poster="/dliver.jpg">
+                  <source src="/lifvid.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+
+                {/* Optional play button overlay - appears before video plays */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 hover:opacity-100 transition-opacity">
+                  <div className="bg-blue-600 bg-opacity-80 rounded-full p-4 shadow-lg">
+                    <svg
+                      className="w-12 h-12 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Video features */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="grid grid-cols-3 gap-4 mt-8 text-center"
+            >
+              <div className="bg-white p-4 rounded-xl shadow-md border border-blue-200">
+                <div className="text-blue-500 text-sm mb-1">Product Demo</div>
+                <div className="text-blue-800 font-medium">Full Overview</div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Call to action */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-center mt-12"
+          >
+            <button className="bg-blue-600 text-white hover:bg-blue-700 font-medium px-6 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+              Schedule a Custom Demo
+            </button>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
+      <SystemShowcase />
       {/* Features Grid */}
       <section className="py-20 bg-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-blue-50 to-white"></div>
@@ -217,6 +351,8 @@ const LiflifLandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+      <AppShowcase />
+      
 
       {/* How It Works - Enhanced */}
       <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-50">
@@ -276,8 +412,7 @@ const LiflifLandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <AppShowcase />
-      <SystemShowcase />
+   
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
@@ -303,7 +438,7 @@ const LiflifLandingPage: React.FC = () => {
       </section>
       <Footer />
     </div>
-  );  
+  );
 };
 
 export default LiflifLandingPage;
