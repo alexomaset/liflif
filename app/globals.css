@@ -7,6 +7,33 @@
   --foreground: #171717;
 }
 
+/* These styles can be added to your global.css or a component-specific CSS file */
+
+.hero-thumb img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .hero-thumb img {
+    position: relative;
+    top: -100px; /* Moves the image up by 100px on larger screens */
+  }
+}
+
+/* Optional additional styles */
+.hero-content {
+  max-width: 540px;
+}
+
+.hero-content .title {
+  font-weight: 700;
+}
+
+.hero-content .title span {
+  display: block;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
