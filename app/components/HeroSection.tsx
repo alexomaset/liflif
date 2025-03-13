@@ -52,13 +52,11 @@ const HeroSection = () => {
             className="lg:w-1/2 hero-thumb"
           >
             <div className="relative w-full h-full">
-              <Image
-                src="/dliver.jpg"
-                alt="Delivery Hero"
-                fill
-                className="object-cover rounded-2xl"
-                priority
-              />
+            <img 
+              src="/hero-thumb.png" 
+              alt="Hero illustration" 
+              className="relative lg:-top-24 max-w-full"
+            />
             </div>
           </motion.div>
         </div>
