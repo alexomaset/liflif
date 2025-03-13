@@ -52,8 +52,10 @@ const HeroSection = () => {
             className="lg:w-1/2 hero-thumb"
           >
             <div className="relative w-full h-full">
-            <img 
+            <Image 
               src="/hero-thumb.png" 
+              width={500}
+              height={500}
               alt="Hero illustration" 
               className="relative lg:-top-24 max-w-full"
             />
