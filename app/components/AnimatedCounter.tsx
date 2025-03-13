@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AnimatedCounterProps {
   end: number;
@@ -7,48 +7,38 @@ interface AnimatedCounterProps {
   suffix?: string;
 }
 
-const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ end, duration = 2000, suffix = '' }) => {
-  const [count, setCount] = useState(0);
+const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ end, suffix = '' }) => {
   const countRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          let startTime: number;
-          const startValue = 0;
-          
-          const step = (timestamp: number) => {
-            if (!startTime) startTime = timestamp;
-            const progress = Math.min((timestamp - startTime) / duration, 1);
-            
-            setCount(Math.floor(progress * (end - startValue) + startValue));
-            
-            if (progress < 1) {
-              requestAnimationFrame(step);
-            }
-          };
+    const currentCount = countRef.current;
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const increment = end / steps;
+    const stepDuration = duration / steps;
 
-          requestAnimationFrame(step);
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      if (currentCount) {
+        currentCount.textContent = Math.round(currentStep * increment).toString() + suffix;
+      }
+      if (currentStep >= steps) {
+        if (currentCount) {
+          currentCount.textContent = end.toString() + suffix;
         }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
+        clearInterval(interval);
+      }
+    }, stepDuration);
 
     return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
-      }
+      clearInterval(interval);
     };
-  }, [end, duration]);
+  }, [end, suffix]);
 
   return (
     <div ref={countRef}>
-      {count}{suffix}
+      {end}{suffix}
     </div>
   );
 };

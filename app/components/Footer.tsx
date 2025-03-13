@@ -1,6 +1,7 @@
 "use client";
 
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Twitter } from "lucide-react";
+import Image from 'next/image';
 
 const Footer = () => {
     const socialLinks = [
@@ -35,7 +36,15 @@ const Footer = () => {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-12">
             <div>
-              <img src="/liflif.jpeg" alt="LIFLIF Logo" className="h-12 w-auto mb-6" />
+              <div className="flex items-center space-x-4">
+                <Image
+                  src="/logo.svg"
+                  alt="LIFLIF Logo"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
+                />
+              </div>
               <p className="text-gray-400 mb-6">
                 Revolutionizing last-mile delivery with cutting-edge technology and
                 unmatched efficiency.

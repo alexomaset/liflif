@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 const HeroSection = () => {
   return (
     <section
       className="relative pt-36 pb-24 bg-cover bg-center"
-      style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+      style={{ backgroundImage: "url('/blue.png')" }}
     >
       {/* Dark overlay with reduced opacity */}
       <div className="absolute inset-0 bg-black/30" />
@@ -34,7 +35,7 @@ const HeroSection = () => {
                 </a>
                 <a 
                   href="#" 
-                  className="bg-transparent text-white border-2 border-blue-300 hover:border-blue-400 hover:bg-blue-100/10 px-8 py-3 rounded-lg transition-colors shadow-lg hover:shadow-xl"
+                  className="bg-transparent text-white border-2 border-blue-300 hover:border-blue-400 hover:bg-blue-100/10 px-8 py-3 rounded-lg flex items-center justify-center transition-colors shadow-lg hover:shadow-xl"
                 >
                   Learn more
                   <ArrowRight className="ml-2 w-5 h-5 text-blue-200" />
@@ -50,11 +51,15 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:w-1/2 hero-thumb"
           >
-            <img 
-              src="/hero-thumb.png" 
-              alt="Hero illustration" 
-              className="relative lg:-top-24 max-w-full"
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src="/dliver.jpg"
+                alt="Delivery Hero"
+                fill
+                className="object-cover rounded-2xl"
+                priority
+              />
+            </div>
           </motion.div>
         </div>
       </div>
