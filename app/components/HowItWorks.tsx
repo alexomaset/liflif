@@ -61,7 +61,7 @@ const HowItWorks = () => {
             Four Steps to Transform Your Enterprise Logistics
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our AI-powered platform streamlines corporate delivery operations from registration to execution
+            Our AI-powered platform streamlines corporates delivery operations from registration to execution
           </p>
         </motion.div>
 
