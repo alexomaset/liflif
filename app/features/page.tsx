@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   MapPin, 
   Clock, 
@@ -16,18 +16,11 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import { motion } from 'framer-motion';
 
 const FeaturesPage = () => {
   const [activeFeature, setActiveFeature] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const featureCategories = [
     {
@@ -85,6 +78,9 @@ const FeaturesPage = () => {
 
   return (
     <div className="bg-gray-50 text-gray-900">
+      {/* Navigation */}
+      <Navbar />
+
       {/* Hero Section */}
       <header className="relative bg-gradient-to-r from-blue-800 via-blue-600 to-blue-500 text-white min-h-screen flex items-center">
         <div className="absolute inset-0 overflow-hidden">
@@ -92,47 +88,6 @@ const FeaturesPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/50"></div>
         </div>
         
-        {/* Navigation */}
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-blue-800/95 shadow-lg backdrop-blur-sm' : 'bg-transparent'
-        }`}>
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link href="/" className="flex items-center space-x-4">
-                <div className="relative w-12 h-12">
-                  <Image
-                    src="/logo.svg"
-                    alt="LIFLIF Logo"
-                    height={564}
-                    width={564}
-                    priority
-                    className="rounded-lg shadow-lg"
-                  />
-                </div>
-                <span className="text-2xl font-bold">LIFLIF</span>
-              </Link>
-              
-              <div className="flex items-center space-x-8">
-                {/* <Link href="/services" className="text-lg font-medium hover:text-blue-200 transition-colors duration-200">
-                  Services
-                </Link> */}
-                <Link href="/features" className="text-lg font-medium hover:text-blue-200 transition-colors duration-200">
-                  Features
-                </Link>
-                <Link href="/contact" className="text-lg font-medium hover:text-blue-200 transition-colors duration-200">
-                  Contact
-                </Link>
-                <a 
-                  href="#" 
-                  className="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-50 transition-all duration-200 shadow-md"
-                >
-                  Get Started
-                </a>
-              </div>
-            </div>
-          </div>
-        </nav>
-
         {/* Hero Content */}
         <div className="container mx-auto px-6 pt-32 relative z-10">
           <div className="max-w-4xl mx-auto text-center">

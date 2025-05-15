@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { 
   Smartphone, 
   ScanLine, 
   RefreshCw, 
   PackageCheck, 
   FileCheck, 
-  Map 
+  Map,
+  Laptop
 } from 'lucide-react';
 
 const AppShowcase = () => {
@@ -115,70 +117,103 @@ const AppShowcase = () => {
             ))}
           </motion.div>
 
-          {/* Phone Mockup */}
+          {/* Device Mockup */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative w-[300px] h-[600px] mx-auto">
-              {/* Phone Frame */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-[3rem] transform -rotate-6 shadow-xl"></div>
-              <div className="absolute inset-0 bg-white rounded-[2.8rem] transform rotate-3 shadow-lg"></div>
-              <div className="relative bg-blue-50 rounded-[2.5rem] h-full p-4 transform rotate-0 border border-blue-100">
-                {/* App Screen Content */}
-                <div className="h-full w-full rounded-[2rem] overflow-hidden bg-white shadow-inner">
-                  {/* App Interface */}
-                  <div className="p-4">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="text-blue-600 text-lg font-medium">Today</div>
-                      <div className="text-gray-500">History</div>
+            {activeTab === 'dashboard' ? (
+              <div className="relative mx-auto">
+                {/* Dashboard Frame */}
+                <div className="relative w-[480px] h-[320px] mx-auto transform perspective-1000">
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl transform -rotate-2 shadow-xl"></div>
+                  <div className="absolute inset-0 bg-white rounded-lg transform rotate-1 shadow-lg"></div>
+                  <div className="relative rounded-md h-full p-3 transform rotate-0 border border-gray-200 bg-gray-50">
+                    <div className="h-full w-full rounded-md overflow-hidden border border-gray-200 shadow-inner">
+                      <Image
+                        src="/dashboard.png"
+                        alt="Dashboard Interface"
+                        fill
+                        className="object-cover object-top"
+                      />
                     </div>
-                    
-                    {/* Delivery Items */}
-                    <div className="space-y-4">
-                      <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <div className="text-sm font-medium text-gray-800">Delivery 001</div>
-                            <div className="text-xs text-gray-500 mt-1">4450/178 Kamenge</div>
-                          </div>
-                          <span className="text-blue-600 text-xs bg-blue-100 px-2 py-1 rounded-full">Needs documents</span>
-                        </div>
+                  </div>
+                </div>
+                
+                {/* Floating elements for dashboard */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute top-0 right-0 bg-blue-500/20 backdrop-blur-sm rounded-lg p-3 shadow-md"
+                >
+                  <Laptop className="w-6 h-6 text-blue-200" />
+                </motion.div>
+              </div>
+            ) : (
+              <div className="relative w-[300px] h-[600px] mx-auto">
+                {/* Phone Frame */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-[3rem] transform -rotate-6 shadow-xl"></div>
+                <div className="absolute inset-0 bg-white rounded-[2.8rem] transform rotate-3 shadow-lg"></div>
+                <div className="relative bg-blue-50 rounded-[2.5rem] h-full p-4 transform rotate-0 border border-blue-100">
+                  {/* App Screen Content */}
+                  <div className="h-full w-full rounded-[2rem] overflow-hidden bg-white shadow-inner">
+                    {/* App Interface */}
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="text-blue-600 text-lg font-medium">Today</div>
+                        <div className="text-gray-500">History</div>
                       </div>
                       
-                      <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <div className="text-sm font-medium text-gray-800">Delivery 002</div>
-                            <div className="text-xs text-gray-500 mt-1">4450/178 Keza</div>
+                      {/* Delivery Items */}
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <div className="text-sm font-medium text-gray-800">Delivery 001</div>
+                              <div className="text-xs text-gray-500 mt-1">4450/178 Kamenge</div>
+                            </div>
+                            <span className="text-blue-600 text-xs bg-blue-100 px-2 py-1 rounded-full">Needs documents</span>
                           </div>
-                          <span className="text-blue-600 text-xs bg-blue-100 px-2 py-1 rounded-full">Ready for delivery</span>
+                        </div>
+                        
+                        <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <div className="text-sm font-medium text-gray-800">Delivery 002</div>
+                              <div className="text-xs text-gray-500 mt-1">4450/178 Keza</div>
+                            </div>
+                            <span className="text-blue-600 text-xs bg-blue-100 px-2 py-1 rounded-full">Ready for delivery</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Floating Elements */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute top-20 right-0 bg-blue-500/20 backdrop-blur-sm rounded-lg p-3 shadow-md"
-            >
-              <Smartphone className="w-6 h-6 text-blue-200" />
-            </motion.div>
-            
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-              className="absolute bottom-20 left-0 bg-blue-500/20 backdrop-blur-sm rounded-lg p-3 shadow-md"
-            >
-              <Map className="w-6 h-6 text-blue-200" />
-            </motion.div>
+            {activeTab !== 'dashboard' && (
+              <>
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute top-20 right-0 bg-blue-500/20 backdrop-blur-sm rounded-lg p-3 shadow-md"
+                >
+                  <Smartphone className="w-6 h-6 text-blue-200" />
+                </motion.div>
+                
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                  className="absolute bottom-20 left-0 bg-blue-500/20 backdrop-blur-sm rounded-lg p-3 shadow-md"
+                >
+                  <Map className="w-6 h-6 text-blue-200" />
+                </motion.div>
+              </>
+            )}
           </motion.div>
         </div>
       </div>

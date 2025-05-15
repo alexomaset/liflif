@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { 
   Users, 
   LayoutDashboard, 
@@ -20,7 +21,7 @@ interface AppMockupProps {
 const AppMockup: React.FC<AppMockupProps> = ({ children, isActive, deviceType }) => (
   <div className={`relative w-full mx-auto transition-all duration-300 ${
     isActive ? 'transform scale-105 shadow-2xl' : 'opacity-90'
-  } ${deviceType === 'phone' ? 'max-w-[280px]' : 'max-w-[820px]'}`}>
+  } ${deviceType === 'phone' ? 'max-w-[280px]' : 'max-w-[520px]'}`}>
     {/* Device frame */}
     <div className={`relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 p-4 ${
       deviceType === 'tablet' ? 'h-full' : ''
@@ -32,7 +33,7 @@ const AppMockup: React.FC<AppMockupProps> = ({ children, isActive, deviceType })
       
       {/* Screen */}
       <div className={`relative bg-white rounded-[2rem] overflow-hidden ${
-        deviceType === 'phone' ? 'aspect-[9/19.5]' : 'aspect-[4/5]'
+        deviceType === 'phone' ? 'aspect-[9/19.5]' : 'aspect-[3/4]'
       } shadow-inner`}>
         {/* Status Bar */}
         <div className="absolute top-0 left-0 right-0 h-7 bg-white z-10 flex justify-between items-center px-5 border-b border-gray-100">
@@ -121,129 +122,13 @@ const APPS_DATA = [
     textColor: 'text-[#22C55E]',
     deviceType: 'tablet' as const,
     screen: (
-      <div className="h-full bg-white flex flex-col">
-        {/* Header with metrics */}
-        <div className="pt-7 px-6 bg-green-500 text-white">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-bold">Delivery Dashboard</h2>
-            <div className="flex space-x-3">
-              <div className="bg-white/10 p-2 rounded-lg">
-                <Users className="w-5 h-5" />
-              </div>
-              <div className="bg-white/10 p-2 rounded-lg">
-                <Package className="w-5 h-5" />
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 gap-4 pb-6">
-            <div className="bg-white/10 rounded-lg p-3">
-              <div className="text-2xl font-bold">28</div>
-              <div className="text-sm opacity-90">Active Deliveries</div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <div className="text-2xl font-bold">15</div>
-              <div className="text-sm opacity-90">Available Drivers</div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <div className="text-2xl font-bold">7</div>
-              <div className="text-sm opacity-90">Avg. Time (min)</div>
-            </div>
-            <div className="bg-white/10 rounded-lg p-3">
-              <div className="text-2xl font-bold">96%</div>
-              <div className="text-sm opacity-90">On-time Rate</div>
-            </div>
-          </div>
-        </div>
-        {/* Map Dashboard */}
-        <div className="relative flex-grow bg-gray-50">
-          <div className="absolute inset-0">
-            {/* Map visualization */}
-            <div className="h-full w-full relative">
-              <div className="absolute inset-0 bg-gray-100"></div>
-              
-              {/* Active delivery routes */}
-              <svg className="absolute inset-0" viewBox="0 0 100 100">
-                <path
-                  d="M10,30 Q30,20 50,40 T90,30"
-                  fill="none"
-                  stroke="#22C55E"
-                  strokeWidth="1.5"
-                  strokeDasharray="4"
-                />
-                <path
-                  d="M20,50 Q40,60 60,50 T90,70"
-                  fill="none"
-                  stroke="#3B82F6"
-                  strokeWidth="1.5"
-                  strokeDasharray="4"
-                />
-                <path
-                  d="M30,80 Q50,70 70,80 T90,50"
-                  fill="none"
-                  stroke="#F59E0B"
-                  strokeWidth="1.5"
-                  strokeDasharray="4"
-                />
-                
-                {/* Points of interest */}
-                <circle cx="10" cy="30" r="2" fill="#22C55E" />
-                <circle cx="50" cy="40" r="2" fill="#22C55E" />
-                <circle cx="90" cy="30" r="2" fill="#22C55E" />
-                
-                <circle cx="20" cy="50" r="2" fill="#3B82F6" />
-                <circle cx="60" cy="50" r="2" fill="#3B82F6" />
-                <circle cx="90" cy="70" r="2" fill="#3B82F6" />
-                
-                <circle cx="30" cy="80" r="2" fill="#F59E0B" />
-                <circle cx="70" cy="80" r="2" fill="#F59E0B" />
-                <circle cx="90" cy="50" r="2" fill="#F59E0B" />
-              </svg>
-              
-              {/* Active drivers */}
-              <div className="absolute top-1/4 left-1/5">
-                <div className="h-3 w-3 bg-green-500 rounded-full">
-                  <div className="absolute -inset-1 bg-green-500/20 rounded-full animate-ping"></div>
-                </div>
-              </div>
-              <div className="absolute top-2/4 right-1/3">
-                <div className="h-3 w-3 bg-blue-500 rounded-full">
-                  <div className="absolute -inset-1 bg-blue-500/20 rounded-full animate-ping"></div>
-                </div>
-              </div>
-              <div className="absolute bottom-1/4 right-1/4">
-                <div className="h-3 w-3 bg-yellow-500 rounded-full">
-                  <div className="absolute -inset-1 bg-yellow-500/20 rounded-full animate-ping"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Overlay controls */}
-          <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
-            <button className="bg-white p-2 rounded-full shadow-lg">
-              <MapPin className="w-5 h-5 text-gray-700" />
-            </button>
-            <button className="bg-white p-2 rounded-full shadow-lg">
-              <Users className="w-5 h-5 text-gray-700" />
-            </button>
-            <button className="bg-white p-2 rounded-full shadow-lg">
-              <Car className="w-5 h-5 text-gray-700" />
-            </button>
-          </div>
-          
-          {/* Bottom panel */}
-          <div className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg rounded-t-xl">
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="font-medium">Current Deliveries</h3>
-                <p className="text-sm text-gray-500">28 in progress • 4 delayed</p>
-              </div>
-              <button className="bg-green-100 text-green-600 px-3 py-1 rounded-lg text-sm font-medium">
-                View All
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className="h-full w-full relative">
+        <Image 
+          src="/dashboard.png"
+          alt="Dashboard Screenshot"
+          fill
+          className="object-contain object-top"
+        />
       </div>
     )
   },
@@ -251,74 +136,58 @@ const APPS_DATA = [
     id: 'driver',
     icon: <Car className="w-6 h-6" />,
     name: 'Driver app',
-    color: 'bg-[#0EA5E9]',
-    textColor: 'text-[#0EA5E9]',
+    color: 'bg-[#F59E0B]',
+    textColor: 'text-[#F59E0B]',
     deviceType: 'phone' as const,
     screen: (
       <div className="h-full bg-gray-50">
         {/* Header */}
         <div className="pt-7 px-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Today</h2>
-            <button className="text-gray-500">History</button>
+            <h2 className="text-lg font-semibold">My Deliveries</h2>
+            <button className="text-blue-500">Filter</button>
           </div>
         </div>
-        {/* Delivery List */}
-        <div className="px-4 space-y-3">
-          {/* Delivery Item 1 */}
-          <div className="bg-red-50 rounded-xl p-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="text-sm font-medium">Delivery 001</span>
-                  <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">Pending</span>
-                </div>
-                <div className="flex items-center text-gray-500 text-xs">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  4450/178 Kamenge
-                </div>
-              </div>
-              <button className="text-red-500 text-xs bg-red-100 px-3 py-1 rounded-full">
-                Needs documents
-              </button>
+        {/* Delivery list */}
+        <div className="px-4 space-y-3 overflow-y-auto max-h-[calc(100%-150px)] pb-4">
+          <div className="bg-white rounded-lg p-4 border border-gray-200">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-medium text-sm">Order #5678</h3>
+              <span className="text-xs bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full">En Route</span>
+            </div>
+            <p className="text-xs text-gray-500">To: 123 Main St, Rohero</p>
+            <div className="flex justify-between items-center mt-3">
+              <span className="text-xs text-gray-500">2 stops left</span>
+              <button className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full">Navigate</button>
             </div>
           </div>
-          {/* Delivery Item 2 */}
-          <div className="bg-green-50 rounded-xl p-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="text-sm font-medium">Delivery 002</span>
-                  <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full">Active</span>
-                </div>
-                <div className="flex items-center text-gray-500 text-xs">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  4450/178 Keza
-                </div>
-              </div>
-              <button className="text-green-500 text-xs bg-green-100 px-3 py-1 rounded-full">
-                Ready for delivery
-              </button>
+          <div className="bg-white rounded-lg p-4 border border-gray-200">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-medium text-sm">Order #5679</h3>
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Completed</span>
+            </div>
+            <p className="text-xs text-gray-500">To: 456 Ave, Ngagara</p>
+            <div className="flex justify-between items-center mt-3">
+              <span className="text-xs text-gray-500">Delivered at 10:15 AM</span>
+              <button className="text-xs text-blue-500">View Details</button>
             </div>
           </div>
-          {/* Delivery Item 3 */}
-          <div className="bg-green-50 rounded-xl p-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="text-sm font-medium">Delivery 003</span>
-                  <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full">Active</span>
-                </div>
-                <div className="flex items-center text-gray-500 text-xs">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  4450/178 Kinanira
-                </div>
-              </div>
-              <button className="text-green-500 text-xs bg-green-100 px-3 py-1 rounded-full">
-                Ready for pickup
-              </button>
-            </div>
-          </div>
+          {/* Add more delivery items... */}
+        </div>
+        {/* Bottom Navigation */}
+        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 flex justify-around items-center px-4">
+          <button className="flex flex-col items-center text-blue-500">
+            <MapPin className="w-5 h-5" />
+            <span className="text-xs mt-1">Map</span>
+          </button>
+          <button className="flex flex-col items-center text-gray-500">
+            <Car className="w-5 h-5" />
+            <span className="text-xs mt-1">Deliveries</span>
+          </button>
+          <button className="flex flex-col items-center text-gray-500">
+            <Users className="w-5 h-5" />
+            <span className="text-xs mt-1">Profile</span>
+          </button>
         </div>
       </div>
     )
@@ -398,27 +267,39 @@ const SystemShowcase = () => {
         <div className="max-w-7xl mx-auto relative">
           {/* Connected Lines */}
           <div className="absolute top-24 left-0 right-0">
-            <svg className="w-full" height="2">
-              <defs>
-                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0" />
-                  <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <line
-                x1="15%"
-                y1="0"
-                x2="85%"
-                y2="0"
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                strokeDasharray="4"
-              />
-            </svg>
-            {/* Connection Dots */}
-            <div className="absolute top-1/2 left-[15%] transform -translate-y-1/2 w-3 h-3 bg-blue-500 rounded-full"></div>
-            <div className="absolute top-1/2 right-[15%] transform -translate-y-1/2 w-3 h-3 bg-blue-500 rounded-full"></div>
+            <div className="flex items-center justify-center space-x-4">
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 16V8C20.9996 7.64927 20.9071 7.3048 20.7315 7.00116C20.556 6.69752 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69752 3.26846 7.00116C3.09294 7.3048 3.00036 7.64927 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M7.5 4.21L12 6.81L16.5 4.21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M7.5 19.79V14.6L3 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M21 12L16.5 14.6V19.79" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3.27 6.96L12 12.01L20.73 6.96" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 22.08V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
           </div>
 
           {/* Apps Grid */}
@@ -434,8 +315,8 @@ const SystemShowcase = () => {
               >
                 {/* App Icon */}
                 <div className="flex flex-col items-center mb-8">
-                  <div className={`${app.color} bg-opacity-20 p-4 rounded-xl mb-3 backdrop-blur-sm border border-white/10`}>
-                    <div className={`${app.textColor}`}>
+                  <div className={`${app.color} bg-opacity-20 p-3 rounded-xl mb-3 backdrop-blur-sm border border-white/10 w-12 h-12 flex items-center justify-center`}>
+                    <div className={`${app.textColor} w-6 h-6`}>
                       {app.icon}
                     </div>
                   </div>
@@ -466,12 +347,6 @@ const SystemShowcase = () => {
           transition={{ duration: 0.8 }}
           className="text-center mt-16"
         >
-          <button className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl text-lg font-semibold">
-            Start Your Free Trial
-          </button>
-          <p className="text-blue-200 mt-4 text-sm">
-            No credit card required • 14-day free trial • Cancel anytime
-          </p>
         </motion.div>
       </div>
     </section>
