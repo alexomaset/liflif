@@ -102,7 +102,7 @@ const SolutionsPage: React.FC = () => {
             <Link href="/" className="relative h-16 w-40">
               <Image
                 src="/logo.svg"
-                alt="LIFLIF Logo"
+                alt="A Platform for fast, reliable delivery."
                 height={564}
                 width={564}
                 priority

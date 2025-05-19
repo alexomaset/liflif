@@ -57,7 +57,7 @@ const Footer = () => {
               <div className="flex items-center mb-6">
                 <Image
                   src="/logo.svg"
-                  alt="LIFLIF Logo"
+                  alt="A Platform for fast, reliable delivery."
                   width={120}
                   height={40}
                   className="h-12 w-auto"
