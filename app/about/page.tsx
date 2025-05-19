@@ -55,7 +55,7 @@ const AboutPage = () => {
             >
               <Image
                 src="/logo.svg"
-                alt="LIFLIF Logo"
+                alt="A Platform for fast, reliable delivery"
                 fill
                 className="object-contain"
                 priority
